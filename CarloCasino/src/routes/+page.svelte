@@ -43,9 +43,9 @@
             <a href="/blackjack" class="flex items-center justify-center rounded-lg w-3/12 h-full">
                 <img class="rounded-lg h-11/12 w-11/12" src="/blackjack.png" alt="blue button">
             </a>
-            <div id="button" class="flex items-center justify-center rounded-lg w-3/12 h-full">
+            <a href="/bluebutton" id="button" class="flex items-center justify-center rounded-lg w-3/12 h-full">
                 <img class="rounded-lg h-11/12 w-11/12" src="/blue_button.png" alt="blue button">
-            </div>
+            </a>
         </div>
     </div>
     {/if}
