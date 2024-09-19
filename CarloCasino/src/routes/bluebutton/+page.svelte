@@ -16,7 +16,8 @@
     const debounceTime = 150
 
     function PlaceBet(){
-        none
+        MainButton = false
+        PlaceButton = true 
     }
 
     async function Button(){
@@ -34,6 +35,8 @@
     if(Random <= ButtonNumber - 1){
         ButtonNumber = 0
         console.log("død")
+        MainButton = true
+        PlaceButton = false
     }
     }
 </script>
