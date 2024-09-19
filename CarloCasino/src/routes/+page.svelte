@@ -4,6 +4,7 @@
 
 <div id="main" class="flex flex-col items-center bg-black w-screen h-screen">
     <div id="navbar" class="flex justify-evenly items-center w-full h-1/6 bg-navy">
+        <img class="h-2/6" src="home.svg" alt="home">
         <a href="/scoreboard" class="flex justify-center btn items-center w-1/5 md:w-1/6 h-1/4 rounded-lg font-mono text-xs md:text-xl bg-blue">
             Scoreboard
         </a>
@@ -28,9 +29,9 @@
             <button class="flex justify-center btn items-center w-1/6 h-3/4 rounded-lg bg-blue border-2 border-black text-5xl font-mono">Claim</button>
         </div>
         <div id="spill" class="flex justify-evenly w-full h-4/6">
-            <div id="button" class="flex items-center justify-center rounded-lg w-3/12 h-full">
+            <a href="/blackjack" class="flex items-center justify-center rounded-lg w-3/12 h-full">
                 <img class="rounded-lg h-11/12 w-11/12" src="/blackjack.png" alt="blue button">
-            </div>
+            </a>
             <div id="button" class="flex items-center justify-center rounded-lg w-3/12 h-full">
                 <img class="rounded-lg h-11/12 w-11/12" src="/blue_button.png" alt="blue button">
             </div>
