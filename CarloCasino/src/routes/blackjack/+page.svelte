@@ -165,6 +165,9 @@ function PlayerHit(){
     }
     }
     MakeImage()
+    if (PlayerCards.length > 2){
+        DoubleButton = true
+    }
 }
 function PlayerDouble(){
     console.log("SumPlayerValue",SumPlayerValue)
@@ -278,10 +281,12 @@ function PlayerStand(){
 
 </script>
 
-<div class="flex justify-between h-screen w-screen bg-gradient-to-b from-transparent via-primary-900/20 to-transparent">
+<div class="flex justify-between h-screen w-screen bg-black">
     <div class="flex flex-col items-center justify-center h-screen w-screen">
         <div id="navbar" class="flex justify-evenly items-center w-full h-1/6 bg-navy">
-            <img class="h-2/6" src="home.svg" alt="home">
+            <a href="/" class="h-2/6">
+                <img class="h-full" src="home.svg" alt="home">
+            </a>
             <a href="/scoreboard" class="flex justify-center btn items-center w-1/5 md:w-1/6 h-1/4 rounded-lg font-mono text-xs md:text-xl bg-blue">
                 Scoreboard
             </a>
@@ -341,4 +346,11 @@ function PlayerStand(){
     -webkit-appearance: none;
     margin: 0;
 }
+
+.btn {
+      transition: transform 0.05s ease;
+    }
+    .btn:active {
+      transform: scale(0.95);
+    }
 </style>

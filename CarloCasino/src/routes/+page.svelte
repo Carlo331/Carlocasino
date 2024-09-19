@@ -1,10 +1,20 @@
-<script>
+<script lang="ts">
     import "../app.css";
+    import { draw, fade } from 'svelte/transition';
+    import { onMount } from 'svelte';
+
+    let onload = false
+
+    onMount(() => {
+        onload = true
+    })
 </script>
 
-<div id="main" class="flex flex-col items-center bg-black w-screen h-screen">
+<div id="main" class="flex flex-col items-center bg-black w-screen h-screen bg-gradient-to-b from-transparent via-primary-900/20 to-transparent">
     <div id="navbar" class="flex justify-evenly items-center w-full h-1/6 bg-navy">
-        <img class="h-2/6" src="home.svg" alt="home">
+        <a href="/" class="h-2/6">
+            <img class="h-full" src="home.svg" alt="home">
+        </a>
         <a href="/scoreboard" class="flex justify-center btn items-center w-1/5 md:w-1/6 h-1/4 rounded-lg font-mono text-xs md:text-xl bg-blue">
             Scoreboard
         </a>
@@ -18,7 +28,8 @@
               User
           </div>
     </div>
-    <div id="resten" class="flex flex-col  justify-evenly items-center w-full h-5/6">
+    {#if onload}
+    <div id="resten" class="flex flex-col  justify-evenly items-center w-full h-5/6"  in:fade={{duration: 1000}}>
         <div id="rain" class="flex justify-between items-center pl-4 pr-4 w-5/6 h-1/6 rounded-lg bg-navy">
             <span class="flex items-center justify-center w- bg-blue border-2 rounded-lg font-mono border-black">Du kan få GRATIS PENGER hvert 30. Minutt</span>
             <div class="flex items-center justify-center w-1/6 h-4/6 bg-blue border-2 rounded-lg font-mono text-5xl border-black">30:00</div>
@@ -37,6 +48,7 @@
             </div>
         </div>
     </div>
+    {/if}
 </div>
 <style>
     .btn {
