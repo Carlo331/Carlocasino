@@ -31,19 +31,19 @@
     {#if onload}
     <div id="resten" class="flex flex-col  justify-evenly items-center w-full h-5/6"  in:fade={{duration: 1000}}>
         <div id="rain" class="flex justify-between items-center pl-4 pr-4 w-5/6 h-1/6 rounded-lg bg-navy">
-            <span class="flex items-center justify-center w- bg-blue border-2 rounded-lg font-mono border-black">Du kan få GRATIS PENGER hvert 30. Minutt</span>
-            <div class="flex items-center justify-center w-1/6 h-4/6 bg-blue border-2 rounded-lg font-mono text-5xl border-black">30:00</div>
-            <div class="flex items-center justify-between p-4 bg-blue h-5/6 w-1/6 border-2 rounded-lg">
+            <div class="flex items-center justify-between p-4 bg-black border-sky h-5/6 w-1/6 border-2 rounded-lg">
                 <img class="w-3/12" src="/Gold_Coins.png" alt="coin">
-                <span class=" font-mono text-6xl">50</span>
+                <span class=" font-mono text-6xl text-sky">50</span>
             </div>
-            <button class="flex justify-center btn items-center w-1/6 h-3/4 rounded-lg bg-blue border-2 border-black text-5xl font-mono">Claim</button>
+            <div class="flex items-center justify-center w-1/6 h-4/6 bg-black border-2 rounded-lg font-mono text-sky text-5xl">30:00</div>
+            <span class="flex items-center justify-center text-sky font-mono ">Du kan få GRATIS PENGER hvert 30. Minutt</span>
+            <button class="flex justify-center btn items-center w-1/6 h-3/4 rounded-lg bg-black border-2 text-sky text-5xl font-mono">Claim</button>
         </div>
         <div id="spill" class="flex justify-evenly w-full h-4/6">
             <a href="/blackjack" class="flex items-center justify-center rounded-lg w-3/12 h-full">
                 <img class="rounded-lg h-11/12 w-11/12" src="/blackjack.png" alt="blue button">
             </a>
-            <a href="/bluebutton" id="button" class="flex items-center justify-center rounded-lg w-3/12 h-full">
+            <a href="/bluebutton" id="button" class="flex items-center b-2 border-sky justify-center rounded-lg w-3/12 h-full">
                 <img class="rounded-lg h-11/12 w-11/12" src="/blue_button.png" alt="blue button">
             </a>
         </div>
