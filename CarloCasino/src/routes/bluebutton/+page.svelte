@@ -1,6 +1,8 @@
 <script>
     import { draw, fade } from 'svelte/transition';
     import { onMount } from 'svelte';
+    import { Popup } from '/src/stores'
+    import Login from "../components/login.svelte";
 
     let onload = false
 
@@ -51,14 +53,17 @@
         <div class="flex justify-center items-center w-2/6 h-1/4 md:w-1/6 md:h-2/5 rounded-lg bg-blue font-mono text-base md:text-3xl">
             Penger 0
         </div>
-        <a href="/login" class="flex justify-center btn items-center w-1/6 md:w-1/12 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
+        <button on:click={()=> {Popup.set(true)}} class="flex justify-center btn items-center w-1/6 md:w-1/12 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
             Logg inn 
-        </a>
+        </button>
         <div class="flex justify-center items-center w-1/6 md:w-1/12 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
             User
         </div>
     </div>
     {#if onload}
+    {#if $Popup}
+        <Login/>
+    {/if}
     <div id="resten" class="flex justify-evenly items-center w-full h-5/6" in:fade={{duration: 1000}}>
         <div id="betting interface" class="flex flex-col justify-center items-center h-full w-1/3">
             <div id="betting amount buttons" class="flex m-[0.5rem] w-[13rem] justify-between ">
