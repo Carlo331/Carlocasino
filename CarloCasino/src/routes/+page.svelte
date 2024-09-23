@@ -2,12 +2,15 @@
     import "../app.css";
     import { draw, fade } from 'svelte/transition';
     import { onMount } from 'svelte';
+    import { Popup } from '/src/stores'
+    import Login from "./components/login.svelte";
 
     let onload = false
 
     onMount(() => {
         onload = true
     })
+
 </script>
 
 <div id="main" class="flex flex-col items-center bg-black w-screen h-screen bg-gradient-to-b from-transparent via-primary-900/20 to-transparent">
@@ -21,14 +24,17 @@
         <div class="flex justify-center items-center w-2/6 h-1/4 md:w-1/6 md:h-2/5 rounded-lg bg-blue font-mono text-base md:text-3xl">
             Penger 0
         </div>
-          <a href="/login" class="flex justify-center btn items-center w-1/6 md:w-1/12 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
+          <button on:click={()=> {Popup.set(true)}} class="flex justify-center btn items-center w-1/6 md:w-1/12 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
               Logg inn 
-          </a>
+          </button>
           <div class="flex justify-center items-center w-1/6 md:w-1/12 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
               User
           </div>
     </div>
     {#if onload}
+    {#if $Popup}
+    <Login/>
+    {/if}
     <div id="resten" class="flex flex-col  justify-evenly items-center w-full h-5/6"  in:fade={{duration: 1000}}>
         <div id="rain" class="flex justify-between items-center pl-4 pr-4 w-5/6 h-1/6 rounded-lg bg-navy">
             <div class="flex items-center justify-between p-4 bg-black border-sky h-5/6 w-1/6 border-2 rounded-lg">
@@ -43,7 +49,7 @@
             <a href="/blackjack" class="flex items-center justify-center rounded-lg w-3/12 h-full">
                 <img class="rounded-lg h-11/12 w-11/12" src="/blackjack.png" alt="blue button">
             </a>
-            <a href="/bluebutton" id="button" class="flex items-center b-2 border-sky justify-center rounded-lg w-3/12 h-full">
+            <a href="/bluebutton" id="button" class="flex items-center justify-center rounded-lg w-3/12 h-full">
                 <img class="rounded-lg h-11/12 w-11/12" src="/blue_button.png" alt="blue button">
             </a>
         </div>
