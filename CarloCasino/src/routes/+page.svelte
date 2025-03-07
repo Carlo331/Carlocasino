@@ -15,7 +15,7 @@
 
 <div id="main" class="flex flex-col items-center bg-black w-screen h-screen bg-gradient-to-b from-transparent via-primary-900/20 to-transparent">
     <div id="navbar" class="flex justify-evenly items-center w-full h-1/6 bg-navy">
-        <a href="/" class="h-2/6">
+        <a href="/" class="h-2/6 btn">
             <img class="h-full" src="home.svg" alt="home">
         </a>
         <a href="/scoreboard" class="flex justify-center btn items-center w-1/5 md:w-1/6 h-1/4 rounded-lg font-mono text-xs md:text-xl bg-blue">
