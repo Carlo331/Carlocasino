@@ -1,8 +1,9 @@
 <script lang="ts">
     import { draw, fade } from 'svelte/transition';
     import { onMount } from 'svelte';
-    import { Popup } from '/src/stores'
+    import { Popup, Money, Bruker } from '/src/stores'
     import Login from "../components/login.svelte";
+    import Navbar from "../components/navbar.svelte";
 
     let onload = false
 
@@ -94,52 +95,64 @@ const cards = [
     let SplitButton = true
 
     let WinLost =""
+
+    let BetAmount = 0
     
 function carddraw(){
-    ButtonsRunning()
+    if (LiveBetAmount > $Money){
+        alert("Bro " + LiveBetAmount + " er større enn " + $Money + ", du kan ikke gå i minus din Nåldus")
+    }
+    else{
+        ButtonsRunning()
 
-    HvorSkalKortet = 0
-    DealerHvorSkalKortet = 0
+        $Money = $Money - LiveBetAmount
+        BetAmount = LiveBetAmount
+        console.log(BetAmount)
 
-    HvilketKort = 0
-    DealerHvilketKort = 0
+        HvorSkalKortet = 0
+        DealerHvorSkalKortet = 0
 
-    DealerCards = []
-    DealerValue = []
+        HvilketKort = 0
+        DealerHvilketKort = 0
 
-    PlayerCards = []
-    PlayerValue = []
+        DealerCards = []
+        DealerValue = []
 
-    SumDealerValue = 0
-    SumPlayerValue = 0
+        PlayerCards = []
+        PlayerValue = []
 
-    WinLost = ""
+        SumDealerValue = 0
+        SumPlayerValue = 0
 
-    let SpillerKort = document.getElementById('SpillerKort')
-    let DealerKort = document.getElementById('DealerKort')
+        WinLost = ""
 
-    SpillerKort.innerHTML = ""
-    DealerKort.innerHTML = ""
+        let SpillerKort = document.getElementById('SpillerKort')
+        let DealerKort = document.getElementById('DealerKort')
 
-        for (let i = 0; i < 2; i++){
-            PlayerHit()
-        }
-        
-        DealerHit()
+        SpillerKort.innerHTML = ""
+        DealerKort.innerHTML = ""
 
-        DealerMakeImage()
+            for (let i = 0; i < 2; i++){
+                PlayerHit()
+            }
+            
+            DealerHit()
 
-        console.log('Current DealerHvorSkalKortet:', DealerHvorSkalKortet)
-        DealerKort = document.getElementById('DealerKort')
-        let Dealernyttkort = document.createElement('img')
-        Dealernyttkort.src = '/cards/1B.svg'
-        Dealernyttkort.classList.add('h-[100%]', 'absolute', 'z-10')
-        Dealernyttkort.style.left = DealerHvorSkalKortet + 'rem'
-        DealerKort.appendChild(Dealernyttkort);
-        
-    console.log(PlayerValue)
-    console.log(PlayerCards)
-    console.log(SumPlayerValue)
+            DealerMakeImage()
+
+            console.log('Current DealerHvorSkalKortet:', DealerHvorSkalKortet)
+            DealerKort = document.getElementById('DealerKort')
+            let Dealernyttkort = document.createElement('img')
+            Dealernyttkort.src = '/cards/1B.svg'
+            Dealernyttkort.classList.add('h-[100%]', 'absolute', 'z-10')
+            Dealernyttkort.style.left = DealerHvorSkalKortet + 'rem'
+            DealerKort.appendChild(Dealernyttkort);
+            
+        console.log(PlayerValue)
+        console.log(PlayerCards)
+        console.log(SumPlayerValue)
+    }
+    
 }    
 function PlayerHit(){
     RandomCard = Math.round(Math.random() * 51)
@@ -172,10 +185,15 @@ function PlayerHit(){
     }
 }
 function PlayerDouble(){
-    console.log("SumPlayerValue",SumPlayerValue)
-    PlayerHit()
-    if (SumPlayerValue <= 21){
-        PlayerStand()
+    if ($Money > BetAmount*2){
+        console.log("SumPlayerValue",SumPlayerValue)
+        PlayerHit()
+        if (SumPlayerValue <= 21){
+            PlayerStand()
+        }
+    }
+    else{
+        alert("Du er for fattig for å double")
     }
 }
 function MakeImage(){
@@ -263,10 +281,12 @@ function PlayerStand(){
     function PlayerWin(){
         ButtonsNotRunning()
         WinLost = "Du Vant :("
+        $Money = $Money + (BetAmount*2)
     }
     function GameDraw(){
         ButtonsNotRunning()
         WinLost = "Det Ble Uavgjort :|"
+        $Money = $Money + BetAmount
     }
     function ButtonsRunning(){
         CardDrawButton = true
@@ -281,27 +301,13 @@ function PlayerStand(){
         DoubleButton = true
     }
 
+let LiveBetAmount = null
+
 </script>
 
 <div class="flex justify-between h-screen w-screen bg-black">
     <div class="flex flex-col items-center justify-center h-screen w-screen">
-        <div id="navbar" class="flex justify-evenly items-center w-full h-1/6 bg-navy mb-3">
-            <a href="/" class="h-2/6 btn">
-                <img class="h-full" src="home.svg" alt="home">
-            </a>
-            <a href="/info" class="flex justify-center btn items-center w-1/6 md:w-1/12 h-1/4 rounded-lg font-mono text-xs md:text-xl bg-blue">
-                Info
-            </a>
-            <div class="flex justify-center items-center w-2/6 h-1/4 md:w-56 md:h-2/5 rounded-lg bg-blue font-mono text-base md:text-3xl">
-                Penger 0
-            </div>
-              <button on:click={()=> {Popup.set(true)}} class="flex justify-center btn items-center w-1/6 md:w-32 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
-                  Logg inn 
-              </button>
-            <div class="flex justify-center items-center w-1/6 md:w-1/12 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
-                  User
-            </div>
-        </div>
+        <Navbar/>
         {#if onload}
         {#if $Popup}
             <Login/>
@@ -309,13 +315,13 @@ function PlayerStand(){
         <div class="flex items-center flex-col-reverse justify-evenly md:flex-row bg-black h-5/6 w-full" in:fade={{duration: 1000}}>
             <div id="betting interface" class="flex flex-col justify-center items-center h-5/12 w-1/3">
                 <div id="betting amount buttons" class="flex m-[0.5rem] w-[13rem] justify-between ">
-                    <button type="button" class="btn rounded-lg w-[4rem] h-[2.5rem] bg-navy text-sky">1/2</button>
-                    <button type="button" class="btn rounded-lg w-[4rem] h-[2.5rem] bg-navy text-sky">2X</button>
-                    <button type="button" class="btn rounded-lg w-[4rem] h-[2.5rem] bg-navy text-sky">Max</button>
+                    <button type="button" on:click={() => (LiveBetAmount = Math.round(LiveBetAmount/2))} class="btn rounded-lg w-[4rem] h-[2.5rem] bg-navy text-sky">1/2</button>
+                    <button type="button" on:click={() => (LiveBetAmount = Math.round(LiveBetAmount*2))} class="btn rounded-lg w-[4rem] h-[2.5rem] bg-navy text-sky">2X</button>
+                    <button type="button" on:click={() => (LiveBetAmount = $Money)} class="btn rounded-lg w-[4rem] h-[2.5rem] bg-navy text-sky">Max</button>
                 </div>
                 <div id="betting amount" class="flex items-center bg-navy p-2 border-[2px] border-blue rounded-lg w-[15rem] h-[3rem] mb-[2rem]">
                     <img class=" h-5" src="/Gold_Coin.png" alt="gold coin">
-                    <p class=" mr-3 ml-2 font-extrabold font-family-bakka text-sm"><input class="text-right style-none bg-navy text-sky outline-none remove-arrow" type="number"></p>
+                    <p class=" mr-3 font-extrabold font-family-bakka text-sm"><input class="text-right style-none bg-navy text-sky outline-none remove-arrow" bind:value={LiveBetAmount} type="number" placeholder="Bet Amount"></p>
                 </div>
                 <div id="game-actions buttons" class=" grid gap-[0.5rem] grid-cols-2 w-[14.5rem] h-[3.5rem]"><button disabled={HitButton} on:click={() => PlayerHit()} class="btn flex justify-evenly items-center rounded-lg w-[7rem] h-[3rem] bg-navy text-sky relative overflow-hidden sc-gdfaqJ bUMKuM"><svg width="18" height="24" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg" class=""><path d="M9.36002 14.968C9.32083 16.3417 9.10691 18.0525 7.95233 18.8222L7.95233 21.1833L3.70234 21.1833L3.70234 18.8222C2.94679 18.5705 2.46135 18.0799 1.81346 17.4344C1.36815 16.991 0.749072 16.3709 0.503517 16.1244C0.445906 16.0664 0.445907 15.9677 0.508712 15.9152C1.06263 15.4515 1.85407 15.3883 2.48637 15.7604C2.66535 15.8657 3.05871 16.0919 3.34959 16.259C3.50732 16.3492 3.70234 16.2349 3.70234 16.0536L3.70234 11.0306C3.70234 10.6396 4.01967 10.3223 4.41067 10.3223C4.80167 10.3223 5.119 10.6396 5.119 11.0306L5.119 13.7067C5.119 14.2155 5.46673 14.2155 5.46673 14.2155C5.86615 14.2155 5.79168 13.7067 5.79168 13.7067L8.51947 14.0056C9.00727 14.0599 9.37419 14.4773 9.36002 14.968Z" fill="#A7A7B9"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M1 4C0.447715 4 0 4.44772 0 5V13.2473C0 13.6262 0.210804 13.956 0.521546 14.1256C0.665624 14.1617 0.817354 14.2027 0.972485 14.2469C0.981627 14.2471 0.990799 14.2473 1 14.2473H2.86303L2.86303 10.6532C2.86303 8.99464 6.08997 8.99462 6.09432 10.6532C6.09867 12.3117 6.09432 12.5843 6.09432 12.5843L7.17308 12.738V5C7.17308 4.44772 6.72537 4 6.17308 4H1Z" fill="#4CF690"></path><g filter="url(#filter0_d_90_3641)"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.73387 13.1004V7.56152C9.73387 7.00924 9.28615 6.56152 8.73387 6.56152H8.19629V12.8836L9.52577 13.073C9.59764 13.0818 9.66698 13.0909 9.73387 13.1004Z" fill="#4CF690"></path></g><defs><filter id="filter0_d_90_3641" x="0.196289" y="0.561523" width="17.5371" height="22.5391" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix><feOffset dy="2"></feOffset><feGaussianBlur stdDeviation="4"></feGaussianBlur><feComposite in2="hardAlpha" operator="out"></feComposite><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_90_3641"></feBlend><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_90_3641" result="shape"></feBlend></filter></defs></svg> Hit</button><button id="StandButton" disabled={StandButton} on:click={() => PlayerStand()} class="btn flex justify-evenly items-center relative overflow-hidden rounded-lg w-[7rem] h-[3rem] text-sky bg-navy sc-gdfaqJ bFwAvv"><svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class=""><path fill-rule="evenodd" clip-rule="evenodd" d="M1.53789 6.95235C1.46236 6.89686 1.37906 6.8529 1.29103 6.82085C0.586621 6.56342 0 6.99522 0 7.74528V7.7845C0.0279282 7.99227 0.121307 8.18473 0.263014 8.33943C0.314742 8.39602 0.423178 8.53287 0.554078 8.70287C1.02449 9.31402 1.40481 9.82159 1.82021 10.4714C1.93298 10.6477 2.0629 10.85 2.20593 11.0727C2.46258 11.4723 2.76144 11.9377 3.07918 12.4368C3.42708 12.9833 3.72045 13.4448 3.829 13.6199C4.48559 14.7955 5.5545 15.6283 6.89446 15.9394C6.59685 15.3098 6.43041 14.6061 6.43041 13.8635C6.43041 11.1776 8.60773 9.00032 11.2936 9.00032C11.8436 9.00032 12.3724 9.09164 12.8654 9.25994L12.8658 4.09648C12.8658 3.55976 12.6162 3.15431 12.0793 3.15431C11.5397 3.15431 11.2901 3.55976 11.2901 4.09648V7.50376L10.5706 7.5023L10.5629 2.30395C10.5629 1.77088 10.3045 1.32074 9.76795 1.33665C9.25164 1.35195 9.00805 1.80755 9.00805 2.32411L9.0038 7.4938L8.26782 7.49222V1.12961C8.26782 0.663572 8.08398 0.293943 7.69128 0.190729C7.11899 0.0401578 6.64396 0.428608 6.64396 1.02033V7.48336L5.9058 7.48166L5.91005 2.70588C5.91005 2.16722 5.65165 1.71672 5.16739 1.61496C4.56049 1.48746 4.05899 1.91526 4.05899 2.53539V8.86206C4.05729 9.05841 3.82111 9.15689 3.68062 9.01979C3.35095 8.69844 3.00162 8.35963 2.80767 8.17152C2.70694 8.07382 2.64812 8.01678 2.65576 8.02396C2.65576 8.02396 1.92816 7.23953 1.53789 6.95235Z" fill="#A7A7B9"></path><g clip-path="url(#clip0_90_3622)"><path d="M11.2944 9.88477C9.10043 9.88477 7.31543 11.6698 7.31543 13.8637C7.31543 16.0577 9.10043 17.8427 11.2944 17.8427C13.4884 17.8427 15.2734 16.0577 15.2734 13.8637C15.2734 11.6698 13.4884 9.88477 11.2944 9.88477ZM11.2944 16.848C9.64896 16.848 8.31017 15.5092 8.31017 13.8637C8.31017 13.2357 8.50057 12.642 8.8626 12.1354L13.0227 16.2955C12.5161 16.6576 11.9224 16.848 11.2944 16.848ZM13.7262 15.5921L9.56607 11.4319C10.0727 11.0699 10.6664 10.8795 11.2944 10.8795C12.9398 10.8795 14.2786 12.2183 14.2786 13.8637C14.2786 14.4918 14.0882 15.0855 13.7262 15.5921Z" fill="#F64C4F"></path></g><defs><clipPath id="clip0_90_3622"><rect width="7.95794" height="7.95794" fill="white" transform="translate(7.31543 9.88477)"></rect></clipPath></defs></svg> Stand</button></div>
                 <div id="double button">
