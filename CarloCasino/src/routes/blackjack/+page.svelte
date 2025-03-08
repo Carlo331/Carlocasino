@@ -72,9 +72,11 @@ const cards = [
 
     let DealerCards = []
     let DealerValue = []
+    let DealerHits = 0
 
     let PlayerCards = []
     let PlayerValue = []
+    let PlayerHasHit = false
 
     let SumPlayerValue = 0
     let SumDealerValue = 0
@@ -117,9 +119,11 @@ function carddraw(){
 
         DealerCards = []
         DealerValue = []
+        DealerHits = 0
 
         PlayerCards = []
         PlayerValue = []
+        PlayerHasHit = false
 
         SumDealerValue = 0
         SumPlayerValue = 0
@@ -248,20 +252,29 @@ function DealerMakeImage(){
 function PlayerStand(){
     console.log("Stand Button Hit")
     ButtonsNotRunning()
-    while (SumDealerValue < 17){
-        DealerHit()
-
-        DealerMakeImage()
     
-        SumDealerValue = 0
-        for (let j = 0; j < DealerValue.length; j++) {
-        SumDealerValue += DealerValue[j]
-            }
-        console.log(DealerCards)
-        console.log(DealerValue)
-        console.log('SumDealerValue(PlayerStand):', SumDealerValue)
+    while (SumDealerValue < 17){
+    DealerHit()
+    DealerHits = DealerHits + 1
+    DealerMakeImage()
+
+    SumDealerValue = 0
+    for (let j = 0; j < DealerValue.length; j++) {
+    SumDealerValue += DealerValue[j]
+        }
+    console.log(DealerCards)
+    console.log(DealerValue)
+    console.log('SumDealerValue(PlayerStand):', SumDealerValue)
     }
-    if (SumDealerValue > 21){
+    if ((SumPlayerValue == 21 && PlayerHasHit == false) && (SumDealerValue == 21 && DealerHits == 1)){
+        GameDraw()
+    }
+    else if ((SumPlayerValue == 21 && PlayerHasHit == false) && (SumDealerValue < 21 || DealerHits > 1)){
+        BetAmount = Math.round(BetAmount * 1.5);
+        console.log("blackjack!!!!") 
+        PlayerWin()
+    }
+    else if (SumDealerValue > 21){
         PlayerWin()
     }
     else if (SumDealerValue < SumPlayerValue){
@@ -283,6 +296,7 @@ function PlayerStand(){
     function PlayerWin(){
         ButtonsNotRunning()
         WinLost = "Du Vant :("
+        console.log(BetAmount*2)
         $Money = $Money + (BetAmount*2)
     }
     function GameDraw(){
@@ -325,9 +339,9 @@ let LiveBetAmount = null
                     <img class=" h-5" src="/Gold_Coin.png" alt="gold coin">
                     <p class=" mr-3 font-extrabold font-family-bakka text-sm"><input class="text-right style-none bg-navy text-sky outline-none remove-arrow" bind:value={LiveBetAmount} type="number" placeholder="Bet Amount"></p>
                 </div>
-                <div id="game-actions buttons" class=" grid gap-[0.5rem] grid-cols-2 w-[14.5rem] h-[3.5rem]"><button disabled={HitButton} on:click={() => PlayerHit()} class="btn flex justify-evenly items-center rounded-lg w-[7rem] h-[3rem] bg-navy text-sky relative overflow-hidden sc-gdfaqJ bUMKuM"><svg width="18" height="24" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg" class=""><path d="M9.36002 14.968C9.32083 16.3417 9.10691 18.0525 7.95233 18.8222L7.95233 21.1833L3.70234 21.1833L3.70234 18.8222C2.94679 18.5705 2.46135 18.0799 1.81346 17.4344C1.36815 16.991 0.749072 16.3709 0.503517 16.1244C0.445906 16.0664 0.445907 15.9677 0.508712 15.9152C1.06263 15.4515 1.85407 15.3883 2.48637 15.7604C2.66535 15.8657 3.05871 16.0919 3.34959 16.259C3.50732 16.3492 3.70234 16.2349 3.70234 16.0536L3.70234 11.0306C3.70234 10.6396 4.01967 10.3223 4.41067 10.3223C4.80167 10.3223 5.119 10.6396 5.119 11.0306L5.119 13.7067C5.119 14.2155 5.46673 14.2155 5.46673 14.2155C5.86615 14.2155 5.79168 13.7067 5.79168 13.7067L8.51947 14.0056C9.00727 14.0599 9.37419 14.4773 9.36002 14.968Z" fill="#A7A7B9"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M1 4C0.447715 4 0 4.44772 0 5V13.2473C0 13.6262 0.210804 13.956 0.521546 14.1256C0.665624 14.1617 0.817354 14.2027 0.972485 14.2469C0.981627 14.2471 0.990799 14.2473 1 14.2473H2.86303L2.86303 10.6532C2.86303 8.99464 6.08997 8.99462 6.09432 10.6532C6.09867 12.3117 6.09432 12.5843 6.09432 12.5843L7.17308 12.738V5C7.17308 4.44772 6.72537 4 6.17308 4H1Z" fill="#4CF690"></path><g filter="url(#filter0_d_90_3641)"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.73387 13.1004V7.56152C9.73387 7.00924 9.28615 6.56152 8.73387 6.56152H8.19629V12.8836L9.52577 13.073C9.59764 13.0818 9.66698 13.0909 9.73387 13.1004Z" fill="#4CF690"></path></g><defs><filter id="filter0_d_90_3641" x="0.196289" y="0.561523" width="17.5371" height="22.5391" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix><feOffset dy="2"></feOffset><feGaussianBlur stdDeviation="4"></feGaussianBlur><feComposite in2="hardAlpha" operator="out"></feComposite><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_90_3641"></feBlend><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_90_3641" result="shape"></feBlend></filter></defs></svg> Hit</button><button id="StandButton" disabled={StandButton} on:click={() => PlayerStand()} class="btn flex justify-evenly items-center relative overflow-hidden rounded-lg w-[7rem] h-[3rem] text-sky bg-navy sc-gdfaqJ bFwAvv"><svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class=""><path fill-rule="evenodd" clip-rule="evenodd" d="M1.53789 6.95235C1.46236 6.89686 1.37906 6.8529 1.29103 6.82085C0.586621 6.56342 0 6.99522 0 7.74528V7.7845C0.0279282 7.99227 0.121307 8.18473 0.263014 8.33943C0.314742 8.39602 0.423178 8.53287 0.554078 8.70287C1.02449 9.31402 1.40481 9.82159 1.82021 10.4714C1.93298 10.6477 2.0629 10.85 2.20593 11.0727C2.46258 11.4723 2.76144 11.9377 3.07918 12.4368C3.42708 12.9833 3.72045 13.4448 3.829 13.6199C4.48559 14.7955 5.5545 15.6283 6.89446 15.9394C6.59685 15.3098 6.43041 14.6061 6.43041 13.8635C6.43041 11.1776 8.60773 9.00032 11.2936 9.00032C11.8436 9.00032 12.3724 9.09164 12.8654 9.25994L12.8658 4.09648C12.8658 3.55976 12.6162 3.15431 12.0793 3.15431C11.5397 3.15431 11.2901 3.55976 11.2901 4.09648V7.50376L10.5706 7.5023L10.5629 2.30395C10.5629 1.77088 10.3045 1.32074 9.76795 1.33665C9.25164 1.35195 9.00805 1.80755 9.00805 2.32411L9.0038 7.4938L8.26782 7.49222V1.12961C8.26782 0.663572 8.08398 0.293943 7.69128 0.190729C7.11899 0.0401578 6.64396 0.428608 6.64396 1.02033V7.48336L5.9058 7.48166L5.91005 2.70588C5.91005 2.16722 5.65165 1.71672 5.16739 1.61496C4.56049 1.48746 4.05899 1.91526 4.05899 2.53539V8.86206C4.05729 9.05841 3.82111 9.15689 3.68062 9.01979C3.35095 8.69844 3.00162 8.35963 2.80767 8.17152C2.70694 8.07382 2.64812 8.01678 2.65576 8.02396C2.65576 8.02396 1.92816 7.23953 1.53789 6.95235Z" fill="#A7A7B9"></path><g clip-path="url(#clip0_90_3622)"><path d="M11.2944 9.88477C9.10043 9.88477 7.31543 11.6698 7.31543 13.8637C7.31543 16.0577 9.10043 17.8427 11.2944 17.8427C13.4884 17.8427 15.2734 16.0577 15.2734 13.8637C15.2734 11.6698 13.4884 9.88477 11.2944 9.88477ZM11.2944 16.848C9.64896 16.848 8.31017 15.5092 8.31017 13.8637C8.31017 13.2357 8.50057 12.642 8.8626 12.1354L13.0227 16.2955C12.5161 16.6576 11.9224 16.848 11.2944 16.848ZM13.7262 15.5921L9.56607 11.4319C10.0727 11.0699 10.6664 10.8795 11.2944 10.8795C12.9398 10.8795 14.2786 12.2183 14.2786 13.8637C14.2786 14.4918 14.0882 15.0855 13.7262 15.5921Z" fill="#F64C4F"></path></g><defs><clipPath id="clip0_90_3622"><rect width="7.95794" height="7.95794" fill="white" transform="translate(7.31543 9.88477)"></rect></clipPath></defs></svg> Stand</button></div>
+                <div id="game-actions buttons" class=" grid gap-[0.5rem] grid-cols-2 w-[14.5rem] h-[3.5rem]"><button disabled={HitButton} on:click={() => (PlayerHasHit = true)} on:click={() => PlayerHit()} class="btn flex justify-evenly items-center rounded-lg w-[7rem] h-[3rem] bg-navy text-sky relative overflow-hidden sc-gdfaqJ bUMKuM"><svg width="18" height="24" viewBox="0 0 18 24" fill="none" xmlns="http://www.w3.org/2000/svg" class=""><path d="M9.36002 14.968C9.32083 16.3417 9.10691 18.0525 7.95233 18.8222L7.95233 21.1833L3.70234 21.1833L3.70234 18.8222C2.94679 18.5705 2.46135 18.0799 1.81346 17.4344C1.36815 16.991 0.749072 16.3709 0.503517 16.1244C0.445906 16.0664 0.445907 15.9677 0.508712 15.9152C1.06263 15.4515 1.85407 15.3883 2.48637 15.7604C2.66535 15.8657 3.05871 16.0919 3.34959 16.259C3.50732 16.3492 3.70234 16.2349 3.70234 16.0536L3.70234 11.0306C3.70234 10.6396 4.01967 10.3223 4.41067 10.3223C4.80167 10.3223 5.119 10.6396 5.119 11.0306L5.119 13.7067C5.119 14.2155 5.46673 14.2155 5.46673 14.2155C5.86615 14.2155 5.79168 13.7067 5.79168 13.7067L8.51947 14.0056C9.00727 14.0599 9.37419 14.4773 9.36002 14.968Z" fill="#A7A7B9"></path><path fill-rule="evenodd" clip-rule="evenodd" d="M1 4C0.447715 4 0 4.44772 0 5V13.2473C0 13.6262 0.210804 13.956 0.521546 14.1256C0.665624 14.1617 0.817354 14.2027 0.972485 14.2469C0.981627 14.2471 0.990799 14.2473 1 14.2473H2.86303L2.86303 10.6532C2.86303 8.99464 6.08997 8.99462 6.09432 10.6532C6.09867 12.3117 6.09432 12.5843 6.09432 12.5843L7.17308 12.738V5C7.17308 4.44772 6.72537 4 6.17308 4H1Z" fill="#4CF690"></path><g filter="url(#filter0_d_90_3641)"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.73387 13.1004V7.56152C9.73387 7.00924 9.28615 6.56152 8.73387 6.56152H8.19629V12.8836L9.52577 13.073C9.59764 13.0818 9.66698 13.0909 9.73387 13.1004Z" fill="#4CF690"></path></g><defs><filter id="filter0_d_90_3641" x="0.196289" y="0.561523" width="17.5371" height="22.5391" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix><feOffset dy="2"></feOffset><feGaussianBlur stdDeviation="4"></feGaussianBlur><feComposite in2="hardAlpha" operator="out"></feComposite><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_90_3641"></feBlend><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_90_3641" result="shape"></feBlend></filter></defs></svg> Hit</button><button id="StandButton" disabled={StandButton} on:click={() => PlayerStand()} class="btn flex justify-evenly items-center relative overflow-hidden rounded-lg w-[7rem] h-[3rem] text-sky bg-navy sc-gdfaqJ bFwAvv"><svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg" class=""><path fill-rule="evenodd" clip-rule="evenodd" d="M1.53789 6.95235C1.46236 6.89686 1.37906 6.8529 1.29103 6.82085C0.586621 6.56342 0 6.99522 0 7.74528V7.7845C0.0279282 7.99227 0.121307 8.18473 0.263014 8.33943C0.314742 8.39602 0.423178 8.53287 0.554078 8.70287C1.02449 9.31402 1.40481 9.82159 1.82021 10.4714C1.93298 10.6477 2.0629 10.85 2.20593 11.0727C2.46258 11.4723 2.76144 11.9377 3.07918 12.4368C3.42708 12.9833 3.72045 13.4448 3.829 13.6199C4.48559 14.7955 5.5545 15.6283 6.89446 15.9394C6.59685 15.3098 6.43041 14.6061 6.43041 13.8635C6.43041 11.1776 8.60773 9.00032 11.2936 9.00032C11.8436 9.00032 12.3724 9.09164 12.8654 9.25994L12.8658 4.09648C12.8658 3.55976 12.6162 3.15431 12.0793 3.15431C11.5397 3.15431 11.2901 3.55976 11.2901 4.09648V7.50376L10.5706 7.5023L10.5629 2.30395C10.5629 1.77088 10.3045 1.32074 9.76795 1.33665C9.25164 1.35195 9.00805 1.80755 9.00805 2.32411L9.0038 7.4938L8.26782 7.49222V1.12961C8.26782 0.663572 8.08398 0.293943 7.69128 0.190729C7.11899 0.0401578 6.64396 0.428608 6.64396 1.02033V7.48336L5.9058 7.48166L5.91005 2.70588C5.91005 2.16722 5.65165 1.71672 5.16739 1.61496C4.56049 1.48746 4.05899 1.91526 4.05899 2.53539V8.86206C4.05729 9.05841 3.82111 9.15689 3.68062 9.01979C3.35095 8.69844 3.00162 8.35963 2.80767 8.17152C2.70694 8.07382 2.64812 8.01678 2.65576 8.02396C2.65576 8.02396 1.92816 7.23953 1.53789 6.95235Z" fill="#A7A7B9"></path><g clip-path="url(#clip0_90_3622)"><path d="M11.2944 9.88477C9.10043 9.88477 7.31543 11.6698 7.31543 13.8637C7.31543 16.0577 9.10043 17.8427 11.2944 17.8427C13.4884 17.8427 15.2734 16.0577 15.2734 13.8637C15.2734 11.6698 13.4884 9.88477 11.2944 9.88477ZM11.2944 16.848C9.64896 16.848 8.31017 15.5092 8.31017 13.8637C8.31017 13.2357 8.50057 12.642 8.8626 12.1354L13.0227 16.2955C12.5161 16.6576 11.9224 16.848 11.2944 16.848ZM13.7262 15.5921L9.56607 11.4319C10.0727 11.0699 10.6664 10.8795 11.2944 10.8795C12.9398 10.8795 14.2786 12.2183 14.2786 13.8637C14.2786 14.4918 14.0882 15.0855 13.7262 15.5921Z" fill="#F64C4F"></path></g><defs><clipPath id="clip0_90_3622"><rect width="7.95794" height="7.95794" fill="white" transform="translate(7.31543 9.88477)"></rect></clipPath></defs></svg> Stand</button></div>
                 <div id="double button">
-                    <button id="DoubleButton" disabled={DoubleButton} on:click={() => PlayerDouble()}  class="btn flex justify-evenly items-center rounded-lg w-[7rem] h-[3rem] text-sky bg-navy relative overflow-hidden sc-gdfaqJ ilzXdT"><svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" class=""><path d="M6.1655 11.18C6.11359 11.2141 6.05709 11.2311 6.00056 11.2311C5.94406 11.2311 5.88753 11.214 5.83562 11.18L1.44984 8.30615L0.203871 9.12261C-0.067957 9.30075 -0.067957 9.80915 0.203871 9.98725L6.00056 13.7857L11.7973 9.98725C12.0691 9.80912 12.0691 9.30072 11.7973 9.12261L10.5513 8.30615L6.1655 11.18Z" fill="#A7A7B9"></path><path d="M11.7973 4.67011L6.1655 0.979734C6.06166 0.911703 5.93944 0.911703 5.83562 0.979734L0.203871 4.67011C-0.067957 4.84825 -0.067957 5.35665 0.203871 5.53476L6.00056 9.33321L11.7973 5.53476C12.0691 5.35665 12.0691 4.84825 11.7973 4.67011Z" fill="#FFAE39"></path></svg> Double</button>
+                    <button id="DoubleButton" disabled={DoubleButton} on:click={() => (PlayerHasHit = true)} on:click={() => PlayerDouble()}  class="btn flex justify-evenly items-center rounded-lg w-[7rem] h-[3rem] text-sky bg-navy relative overflow-hidden sc-gdfaqJ ilzXdT"><svg width="12" height="14" viewBox="0 0 12 14" fill="none" xmlns="http://www.w3.org/2000/svg" class=""><path d="M6.1655 11.18C6.11359 11.2141 6.05709 11.2311 6.00056 11.2311C5.94406 11.2311 5.88753 11.214 5.83562 11.18L1.44984 8.30615L0.203871 9.12261C-0.067957 9.30075 -0.067957 9.80915 0.203871 9.98725L6.00056 13.7857L11.7973 9.98725C12.0691 9.80912 12.0691 9.30072 11.7973 9.12261L10.5513 8.30615L6.1655 11.18Z" fill="#A7A7B9"></path><path d="M11.7973 4.67011L6.1655 0.979734C6.06166 0.911703 5.93944 0.911703 5.83562 0.979734L0.203871 4.67011C-0.067957 4.84825 -0.067957 5.35665 0.203871 5.53476L6.00056 9.33321L11.7973 5.53476C12.0691 5.35665 12.0691 4.84825 11.7973 4.67011Z" fill="#FFAE39"></path></svg> Double</button>
                 </div>
                 <div id="place bet button" class="mt-[0.5rem]">
                     <button id="CardDrawButton" disabled={CardDrawButton} on:click={() => carddraw()} type="button" class="btn rounded-lg w-[14.5rem] h-[3rem] text-sky bg-navy">Place bet</button>
