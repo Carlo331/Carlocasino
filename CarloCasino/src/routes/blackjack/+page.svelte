@@ -285,19 +285,19 @@ function PlayerStand(){
 
 <div class="flex justify-between h-screen w-screen bg-black">
     <div class="flex flex-col items-center justify-center h-screen w-screen">
-        <div id="navbar" class="flex justify-evenly items-center w-full h-1/6 bg-navy">
+        <div id="navbar" class="flex justify-evenly items-center w-full h-1/6 bg-navy mb-3">
             <a href="/" class="h-2/6 btn">
                 <img class="h-full" src="home.svg" alt="home">
             </a>
-            <a href="/scoreboard" class="flex justify-center btn items-center w-1/5 md:w-1/6 h-1/4 rounded-lg font-mono text-xs md:text-xl bg-blue">
-                Scoreboard
+            <a href="/info" class="flex justify-center btn items-center w-1/6 md:w-1/12 h-1/4 rounded-lg font-mono text-xs md:text-xl bg-blue">
+                Info
             </a>
-            <div class="flex justify-center items-center w-2/6 h-1/4 md:w-1/6 md:h-2/5 rounded-lg bg-blue font-mono text-base md:text-3xl">
+            <div class="flex justify-center items-center w-2/6 h-1/4 md:w-56 md:h-2/5 rounded-lg bg-blue font-mono text-base md:text-3xl">
                 Penger 0
             </div>
-            <button on:click={()=> {Popup.set(true)}} class="flex justify-center btn items-center w-1/6 md:w-1/12 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
-                Logg inn 
-            </button>
+              <button on:click={()=> {Popup.set(true)}} class="flex justify-center btn items-center w-1/6 md:w-32 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
+                  Logg inn 
+              </button>
             <div class="flex justify-center items-center w-1/6 md:w-1/12 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
                   User
             </div>
@@ -306,8 +306,8 @@ function PlayerStand(){
         {#if $Popup}
             <Login/>
         {/if}
-        <div class="flex items-center justify-between bg-black h-5/6 w-full" in:fade={{duration: 1000}}>
-            <div id="betting interface" class="flex flex-col justify-center items-center h-full w-1/3">
+        <div class="flex items-center flex-col-reverse justify-evenly md:flex-row bg-black h-5/6 w-full" in:fade={{duration: 1000}}>
+            <div id="betting interface" class="flex flex-col justify-center items-center h-5/12 w-1/3">
                 <div id="betting amount buttons" class="flex m-[0.5rem] w-[13rem] justify-between ">
                     <button type="button" class="btn rounded-lg w-[4rem] h-[2.5rem] bg-navy text-sky">1/2</button>
                     <button type="button" class="btn rounded-lg w-[4rem] h-[2.5rem] bg-navy text-sky">2X</button>
@@ -325,20 +325,20 @@ function PlayerStand(){
                     <button id="CardDrawButton" disabled={CardDrawButton} on:click={() => carddraw()} type="button" class="btn rounded-lg w-[14.5rem] h-[3rem] text-sky bg-navy">Place bet</button>
                 </div>
             </div>
-            <div id="spillbrett" class="flex flex-col items-center justify-between bg-navy h-[92%] w-[58%] mr-[2.5%] rounded">
-                <div id="DealerKort" class="flex relative justify-between border-[0.1rem] mt-[1rem] rounded-lg border-black h-[11rem] w-[18rem]">
+            <div id="spillbrett" class="flex flex-col items-center justify-between bg-navy h-1/2 w-10/12 md:h-[92%] md:w-[58%] rounded">
+                <div id="DealerKort" class="flex relative justify-between border-[0.1rem] mt-[1rem] rounded-lg border-black h-[100%] w-11/12 md:h-[11rem] md:w-[18rem]">
                     
                 </div>
                 <div id="Dealer value">
                     <span class="text-sky">{SumDealerValue}</span>
                 </div>
-                <div id="spacing" class="flex items-center justify-center h-[18rem] w-[10rem]">
+                <div id="spacing" class="flex items-center justify-center h-[10rem] w-[10rem]">
                     <span class="text-sky">{WinLost}</span>
                 </div>
                 <div id="player value">
                     <span class="text-sky">{SumPlayerValue}</span>
                 </div>
-                <div id="SpillerKort" class="flex relative justify-between border-[0.1rem] mb-[1rem] rounded-lg border-black h-[11rem] w-[18rem]">
+                <div id="SpillerKort" class="flex relative justify-between border-[0.1rem] mb-[1rem] rounded-lg border-black h-[100%] w-11/12 md:h-[11rem] md:w-[18rem]">
                 
                 </div>
                     
