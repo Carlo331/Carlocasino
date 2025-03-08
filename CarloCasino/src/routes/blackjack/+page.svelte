@@ -186,6 +186,8 @@ function PlayerHit(){
 }
 function PlayerDouble(){
     if ($Money > BetAmount*2){
+        $Money = $Money - BetAmount
+        BetAmount = BetAmount*2
         console.log("SumPlayerValue",SumPlayerValue)
         PlayerHit()
         if (SumPlayerValue <= 21){

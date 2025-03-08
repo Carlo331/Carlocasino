@@ -5,7 +5,6 @@
     let Password = ""
 
     function login(){
-      Money.set(100)
       $Popup = false
     }
 
