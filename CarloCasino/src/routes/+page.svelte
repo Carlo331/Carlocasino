@@ -27,7 +27,7 @@
           console.log("High Score updated")
         } 
         else {
-          alert("Du har ingen bruker. Dette gjør at din Highscore ikke blir lagret til neste gang")
+          alert("Du har ingen bruker. Dette gjør at dine pengene ikke blir lagret til neste gang")
         }
       } 
       catch (error) {

@@ -20,5 +20,8 @@
 	"type": "module",
 	"dependencies": {
 		"firebase": "^11.4.0"
-	}
+	},
+	"engines": {
+    "node": "18.x"
+  }
 }
