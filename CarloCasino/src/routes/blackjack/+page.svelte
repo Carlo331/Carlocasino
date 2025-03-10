@@ -1,9 +1,11 @@
-<script lang="ts">
+<script>
     import { draw, fade } from 'svelte/transition';
     import { onMount } from 'svelte';
     import { Popup, Money, Bruker } from '/src/stores'
     import Login from "../components/login.svelte";
     import Navbar from "../components/navbar.svelte";
+    import { doc, updateDoc, getDoc } from 'firebase/firestore';
+    import { db } from '/src/lib/firebase';
 
     let onload = false
 
@@ -108,6 +110,7 @@ function carddraw(){
         ButtonsRunning()
 
         $Money = $Money - LiveBetAmount
+        UpdateFirebase()
         BetAmount = LiveBetAmount
         console.log(BetAmount)
 
@@ -191,6 +194,7 @@ function PlayerHit(){
 function PlayerDouble(){
     if ($Money > BetAmount*2){
         $Money = $Money - BetAmount
+        UpdateFirebase()
         BetAmount = BetAmount*2
         console.log("SumPlayerValue",SumPlayerValue)
         PlayerHit()
@@ -298,11 +302,13 @@ function PlayerStand(){
         WinLost = "Du Vant :("
         console.log(BetAmount*2)
         $Money = $Money + (BetAmount*2)
+        UpdateFirebase()
     }
     function GameDraw(){
         ButtonsNotRunning()
         WinLost = "Det Ble Uavgjort :|"
         $Money = $Money + BetAmount
+        UpdateFirebase()
     }
     function ButtonsRunning(){
         CardDrawButton = true
@@ -315,6 +321,26 @@ function PlayerStand(){
         HitButton = true
         StandButton = true
         DoubleButton = true
+    }
+
+    async function UpdateFirebase(){
+        try {
+        const userDocRef = doc(db, 'users', $Bruker)
+        const userDocSnap = await getDoc(userDocRef)
+        if (userDocSnap.exists()) {
+          console.log("Updating high score for user:", $Bruker)
+          await updateDoc(userDocRef, {
+            Money: $Money
+          })
+          console.log("High Score updated")
+        } 
+        else {
+          alert("Du har ingen bruker. Dette gjør at din Highscore ikke blir lagret til neste gang")
+        }
+      } 
+      catch (error) {
+        alert("error: " + error)
+      }
     }
 
 let LiveBetAmount = null

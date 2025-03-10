@@ -17,7 +17,7 @@
           Logg inn 
       </button>
       <div class="flex justify-center items-center w-1/6 md:w-1/12 h-1/4 rounded-lg bg-blue font-mono text-xs md:text-xl">
-          User
+          {$Bruker}
       </div>
 </div>
 <style>

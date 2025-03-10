@@ -4,6 +4,8 @@
     import { Popup, Money, Bruker } from '/src/stores'
     import Login from "../components/login.svelte";
     import Navbar from "../components/navbar.svelte";
+    import { doc, updateDoc, getDoc } from 'firebase/firestore';
+    import { db } from '/src/lib/firebase';
 
     let onload = false
 
@@ -28,10 +30,9 @@
     }
     else{
         $Money = $Money - LiveBetAmount
+        UpdateFirebase()
         BetAmount = LiveBetAmount
         console.log(BetAmount)
-
-        BetAmount = LiveBetAmount
         MainButton = false
         PlaceButton = true 
         CashButton = false
@@ -40,6 +41,7 @@
 
     function CashOut(){
         $Money = $Money + Math.round(BetAmount * CashMultiplier)
+        UpdateFirebase()
         ButtonNumber = 0
         CashMultiplier = 0
         console.log("Cashout" + Math.round(BetAmount * CashMultiplier))
@@ -70,6 +72,26 @@
         PlaceButton = false
         CashButton = true
     }
+    }
+
+    async function UpdateFirebase(){
+        try {
+        const userDocRef = doc(db, 'users', $Bruker)
+        const userDocSnap = await getDoc(userDocRef)
+        if (userDocSnap.exists()) {
+          console.log("Updating high score for user:", $Bruker)
+          await updateDoc(userDocRef, {
+            Money: $Money
+          })
+          console.log("High Score updated")
+        } 
+        else {
+          alert("Du har ingen bruker. Dette gjør at din Highscore ikke blir lagret til neste gang")
+        }
+      } 
+      catch (error) {
+        alert("error: " + error)
+      }
     }
 </script>
 <div id="main" class="flex flex-col items-center bg-black w-screen h-screen">

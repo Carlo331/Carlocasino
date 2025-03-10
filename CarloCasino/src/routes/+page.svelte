@@ -1,10 +1,12 @@
-<script lang="ts">
+<script>
     import "../app.css";
     import { draw, fade } from 'svelte/transition';
     import { onMount } from 'svelte';
     import { Popup, Money, Bruker } from '/src/stores'
     import Login from "./components/login.svelte";
     import Navbar from "./components/navbar.svelte";
+    import { doc, updateDoc, getDoc } from 'firebase/firestore';
+    import { db } from '/src/lib/firebase';
 
     let onload = false
 
@@ -12,9 +14,27 @@
         onload = true
     })
 
-    function RainClaim(){
+    async function RainClaim(){
         $Money = $Money + 50
+        try {
+        const userDocRef = doc(db, 'users', $Bruker)
+        const userDocSnap = await getDoc(userDocRef)
+        if (userDocSnap.exists()) {
+          console.log("Updating high score for user:", $Bruker)
+          await updateDoc(userDocRef, {
+            Money: $Money
+          })
+          console.log("High Score updated")
+        } 
+        else {
+          alert("Du har ingen bruker. Dette gjør at din Highscore ikke blir lagret til neste gang")
+        }
+      } 
+      catch (error) {
+        alert("error: " + error)
+      }
     }
+
 </script>
 
 <div id="main" class="flex flex-col items-center bg-black w-screen h-screen bg-gradient-to-b from-transparent via-primary-900/20 to-transparent">
