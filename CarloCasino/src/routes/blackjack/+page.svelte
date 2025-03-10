@@ -192,7 +192,7 @@ function PlayerHit(){
     }
 }
 function PlayerDouble(){
-    if ($Money > BetAmount*2){
+    if ($Money >= BetAmount){
         $Money = $Money - BetAmount
         UpdateFirebase()
         BetAmount = BetAmount*2

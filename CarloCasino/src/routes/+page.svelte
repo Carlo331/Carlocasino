@@ -30,7 +30,7 @@
         }
       } 
       catch (error) {
-        alert("error: " + error)
+        alert("Du har ingen bruker. Dette gjør at dine pengene ikke blir lagret til neste gang")
       }
     }
 
