@@ -347,9 +347,9 @@ let LiveBetAmount = null
 
 </script>
 
-<div class="flex justify-between h-screen w-screen bg-black">
+<div id="main" class="flex flex-col justify-between h-screen w-screen bg-black">
+    <Navbar/>
     <div class="flex flex-col items-center justify-center h-screen w-screen">
-        <Navbar/>
         {#if onload}
         {#if $Popup}
             <Login/>
