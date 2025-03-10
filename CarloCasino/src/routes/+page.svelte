@@ -15,16 +15,15 @@
     })
 
     async function RainClaim(){
-        $Money = $Money + 50
         try {
         const userDocRef = doc(db, 'users', $Bruker)
         const userDocSnap = await getDoc(userDocRef)
         if (userDocSnap.exists()) {
-          console.log("Updating high score for user:", $Bruker)
-          await updateDoc(userDocRef, {
-            Money: $Money
-          })
-          console.log("High Score updated")
+            $Money = $Money + 50
+            console.log("Updating high score for user:", $Bruker)
+            await updateDoc(userDocRef, {
+                Money: $Money
+            })
         } 
         else {
           alert("Du har ingen bruker. Dette gjør at dine pengene ikke blir lagret til neste gang")
@@ -49,7 +48,7 @@
                 <img class="w-3/12" src="/Gold_Coins.png" alt="coin">
                 <span class=" font-mono text-2xl md:text-6xl text-sky">50</span>
             </div>
-            <div class="flex items-center justify-center w-1/6 h-2/6 md:w-40 md:h-4/6 bg-black border-2 rounded-lg font-mono text-sky text-lg md:text-5xl">30:00</div>
+            <!--<div class="flex items-center justify-center w-1/6 h-2/6 md:w-40 md:h-4/6 bg-black border-2 rounded-lg font-mono text-sky text-lg md:text-5xl">30:00</div>-->
             <span class="flex items-center text-2xl w-1/6 md:text-6xl justify-center text-sky font-mono ">Rain</span>
             <button on:click={()=> RainClaim()} class="flex justify-center btn items-center w-4/12 h-1/2 md:w-44 md:h-3/4 rounded-lg bg-black border-2 text-sky text-2xl md:text-5xl font-mono">Claim</button>
         </div>

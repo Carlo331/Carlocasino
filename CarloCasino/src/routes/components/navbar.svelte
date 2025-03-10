@@ -3,7 +3,7 @@
     import { onMount } from 'svelte';
     import { Popup, Money, Bruker } from '/src/stores'
 </script>
-<div id="navbar" class="flex justify-evenly items-center w-full h-1/6 bg-navy">
+<div id="navbar" class="flex justify-evenly items-center w-full h-24 md:h-1/6 bg-navy">
     <a href="/" class="h-2/6 btn">
         <img class="h-full" src="home.svg" alt="home">
     </a>

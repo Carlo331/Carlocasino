@@ -21,7 +21,7 @@
     <div id="resten" class="flex flex-col justify-evenly items-start pl-14 w-full h-5/6"  in:fade={{duration: 1000}}>
         <div id="RainInfo" class="flex flex-col items-start w-5/6">
             <span class="text-3xl text-blue">Rain Info</span>
-            <span class="text-sm text-sky">Med Rain kan du få gratis penger hver halvtime. Wow det er snilt.</span>
+            <span class="text-sm text-sky">Med Rain kan du få gratis penger hver halvtime. Wow det er snilt. Og for tiden er det enda snillere siden det ikke er noe som stopper deg fra å hente penger så ofte du vil.</span>
         </div>
         <div id="BlackjackInfo" class="flex flex-col items-start w-5/6">
             <span class="text-3xl text-blue">Blackjack Info</span>
